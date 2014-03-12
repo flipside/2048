@@ -14,5 +14,18 @@
 		}
 	},
 	"modules": {
+		"accelerometer": {
+			"version": "2.0"
+		},
+		"display": {
+			"version": "2.3",
+			"config": {
+				"orientations": {
+					"ipad": "any",
+					"android": "portrait",
+					"iphone": "portrait"
+				}
+			}
+		}
 	}
 }

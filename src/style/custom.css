@@ -1,0 +1,81 @@
+.directional {
+  position: relative;
+  margin-top: 20px;
+  height: 80px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.direction-button {
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  text-align: center;
+  background-color: #ff0;
+  /*padding: 10px;*/
+  border: 1px solid;
+  border-radius: 3px;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=5); /*for IE*/
+  -webkit-user-select: none;
+}
+
+.current-direction {
+  background-color: #0ff;
+}
+
+#up-button {
+  left: 250px;
+  margin-left: -26px;
+  top: 0;
+}
+
+#right-button {
+  right: 183px;
+  top: 40px;
+}
+
+#down-button {
+  left: 250px;
+  margin-left: -26px;
+  top: 80px;
+}
+
+#left-button {
+  left: 183px;
+  top: 40px;
+}
+
+#tilt {
+  float: right;
+  height: 50px;
+  width: 50px;
+  background-color: #ff0;
+  border: 1px solid;
+  border-radius: 3px;
+  -webkit-user-select: none;
+}
+
+.tile {
+  -webkit-transform: translate3d(0,0,0);
+}
+
+@media screen and (max-width: 480px) {
+  #up-button {
+    left: 140px;
+  }
+
+  #right-button {
+    right: 73px;
+  }
+
+  #down-button {
+    left: 140px;
+  }
+
+  #left-button {
+    left: 73px;
+  }
+}

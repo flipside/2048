@@ -5,6 +5,7 @@
   <title>2048</title>
 
   <link href="style/main.css" rel="stylesheet" type="text/css">
+  <link href="style/custom.css" rel="stylesheet" type="text/css">
   <link rel="shortcut icon" href="favicon.ico">
 
   <meta name="HandheldFriendly" content="True">
@@ -17,7 +18,7 @@
       <h1 class="title">2048</h1>
       <div class="score-container">0</div>
     </div>
-    <p class="game-intro">Join the numbers and get to the <strong>2048 tile!</strong></p>
+    <p class="game-intro">Join numbers and get to the <strong>2048</strong> tile!</p>
 
     <div class="game-container">
       <div class="game-message">
@@ -58,6 +59,18 @@
 
       </div>
     </div>
+    <div class="directional">
+      <a class="direction-button" id="up-button"></a>
+      <a class="direction-button" id="right-button"></a>
+      <a class="direction-button" id="down-button"></a>
+      <a class="direction-button" id="left-button"></a>
+    </div>
+
+
+    <a id="tilt">tilt</a>
+    <p id="beta"></p>
+    <p id="gamma"></p>
+    <p id="tilt-direction"></p>
 
     <p class="game-explanation">
       <strong class="important">How to play:</strong> Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
