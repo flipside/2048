@@ -55,44 +55,88 @@ KeyboardInputManager.prototype.listen = function () {
 
   var retry = document.getElementsByClassName("retry-button")[0];
   retry.addEventListener("click", this.restart.bind(this));
+  retry.addEventListener("touchstart", this.restart.bind(this));
+
+
+  // var xPos = document.getElementById('beta');
+  // var yPos = document.getElementById('gamma');
+
 
   // Listen to swipe events
-  var gestures = [Hammer.DIRECTION_UP, Hammer.DIRECTION_RIGHT,
-                  Hammer.DIRECTION_DOWN, Hammer.DIRECTION_LEFT];
-
+  var touchStartClientX, touchStartClientY;
   var gameContainer = document.getElementsByClassName("game-container")[0];
-  var handler       = Hammer(gameContainer, {
-    drag_block_horizontal: true,
-    drag_block_vertical: true
+  var gameWidth = gameContainer.clientWidth;
+  var gameHeight = gameContainer.clientHeight;
+
+  var getQuadrant = function (x, y) {
+    var t1 = gameWidth * y - gameHeight * x > 0;
+    var t2 = -gameWidth * y - gameHeight * (x - gameWidth) > 0;
+    if (t1 && t2) {
+      // left
+      self.emit('move', 3);
+    } else if (!t1 && t2) {
+      // up
+      self.emit('move', 0);
+    } else if (!t1 && !t2) {
+      // right
+      self.emit('move', 1);
+    } else {
+      // down
+      self.emit('move', 2);
+    }
+  };
+
+  gameContainer.addEventListener("touchstart", function (event) {
+    if (event.touches.length > 1) return;
+
+    touchStartClientX = event.touches[0].clientX;
+    touchStartClientY = event.touches[0].clientY;
+    event.preventDefault();
+  });
+  gameContainer.addEventListener("touchmove", function (event) {
+    event.preventDefault();
+    // xPos.textContent = event.touches[0].pageX - gameContainer.offsetLeft;
+    // yPos.textContent = event.touches[0].pageY - gameContainer.offsetTop;
+  });
+  gameContainer.addEventListener("touchend", function (event) {
+    if (event.touches.length > 0) {
+      return;
+    }
+    var dx = event.changedTouches[0].clientX - touchStartClientX;
+    var absDx = Math.abs(dx);
+
+    var dy = event.changedTouches[0].clientY - touchStartClientY;
+    var absDy = Math.abs(dy);
+
+    if (Math.max(absDx, absDy) > 15) {
+      // (right : left) : (down : up)
+      self.emit("move", absDx > absDy ? (dx > 0 ? 1 : 3) : (dy > 0 ? 2 : 0));
+    } else {
+      getQuadrant(event.changedTouches[0].pageX - gameContainer.offsetLeft,
+                  event.changedTouches[0].pageY - gameContainer.offsetTop);
+    }
   });
 
-  handler.on("swipe", function (event) {
-    event.gesture.preventDefault();
-    mapped = gestures.indexOf(event.gesture.direction);
+/*  var directionButtons = document.getElementsByClassName("direction-button");
 
-    if (mapped !== -1) self.emit("move", mapped);
-  });
-
-  var directionButtons = document.getElementsByClassName("direction-button");
-
-  Hammer(directionButtons[0]).on("tap", function (e) {
+  directionButtons[0].addEventListener("touchstart", function (e) {
     e.preventDefault();
     self.emit("move", 0);
   });
-  Hammer(directionButtons[1]).on("tap", function (e) {
+  directionButtons[1].addEventListener("touchstart", function (e) {
     e.preventDefault();
     self.emit("move", 1);
   });
-  Hammer(directionButtons[2]).on("tap", function (e) {
+  directionButtons[2].addEventListener("touchstart", function (e) {
     e.preventDefault();
     self.emit("move", 2);
   });
-  Hammer(directionButtons[3]).on("tap", function (e) {
+  directionButtons[3].addEventListener("touchstart", function (e) {
     e.preventDefault();
     self.emit("move", 3);
-  });
+  });*/
 
-  if (window.DeviceOrientationEvent) {
+  /*if (window.DeviceOrientationEvent) {
     // var alpha = document.getElementById('alpha');
     var beta = document.getElementById('beta');
     var gamma = document.getElementById('gamma');
@@ -142,10 +186,7 @@ KeyboardInputManager.prototype.listen = function () {
       // tilt([e.beta, e.gamma]);
     };
 
-    var tilted = Hammer(tilt, {
-      hold_timeout: 0
-    });
-    tilted.on('hold', function (e) {
+    tilt.addEventListener('touchstart', function (e) {
       e.preventDefault();
       e.stopPropagation();
       e.gesture.preventDefault();
@@ -156,14 +197,14 @@ KeyboardInputManager.prototype.listen = function () {
       window.addEventListener('deviceorientation', deviceorientation, true);
     });
 
-    tilted.on('release', function (e) {
+    tilt.addEventListener('touchend', function (e) {
       e.preventDefault();
       tilt.textContent = 'release';
       window.removeEventListener('deviceorientation', deviceorientation, true);
     });
 
 
-  }
+  }*/
 
 };
 
